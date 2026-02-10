@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lern-App</title>
+
+<style>
+  body { font-family:sans-serif; padding:20px; max-width:500px; margin:auto; }
+  .card { padding:15px; border:1px solid #ccc; border-radius:8px; margin-bottom:20px; }
+  button { width:100%; padding:10px; margin:5px 0; }
+</style>
+</head>
+<body>
+
+<h2>📘 Lern-App</h2>
+
+<div class="card">
+  <h3 id="frageText"></h3>
+  <p id="antwortText" style="display:none; font-weight:bold;"></p>
+
+  <button onclick="zeigeAntwort()">Antwort anzeigen</button>
+  <button onclick="zurueck()">◀ Zurück</button>
+  <button onclick="weiter()">Weiter ▶</button>
+
+  <p id="fortschritt"></p>
+</div>
+
+<script>
+// --------------------------------------------------
+// Globale Variablen
+// --------------------------------------------------
+let daten = [];
+let index = 0;
+
+// --------------------------------------------------
+// JSON-Datei laden (fragen.json muss im selben Ordner liegen)
+// --------------------------------------------------
+async function ladeJSON() {
+  try {
+    const response = await fetch("fragen.json");
+    daten = await response.json();
+
+    // Falls localStorage einen Index gespeichert hat → übernehmen
+    index = Number(localStorage.getItem("letzterIndex")) || 0;
+
+    anzeigen();
+  } catch (err) {
+    // Fallback, falls Datei fehlt
+    daten = [
+      { frage:"Keine Daten gefunden", antwort:"Die Datei fragen.json fehlt." }
+    ];
+    anzeigen();
+  }
+}
+
+// --------------------------------------------------
+// Frage anzeigen
+// --------------------------------------------------
+function anzeigen() {
+  if (index < 0) index = daten.length - 1;
+  if (index >= daten.length) index = 0;
+
+  document.getElementById("frageText").textContent = daten[index].frage;
+
+  // Zeilenumbrüche erhalten
+  document.getElementById("antwortText").innerHTML =
+    daten[index].antwort.replace(/\n/g, "<br>");
+
+  document.getElementById("antwortText").style.display = "none";
+
+  document.getElementById("fortschritt").textContent =
+    "Frage " + (index+1) + " von " + daten.length;
+
+  localStorage.setItem("letzterIndex", index);
+}
+
+// --------------------------------------------------
+// Antwort einblenden
+// --------------------------------------------------
+function zeigeAntwort() {
+  document.getElementById("antwortText").style.display = "block";
+}
+
+// --------------------------------------------------
+// Navigation
+// --------------------------------------------------
+function weiter() { index++; anzeigen(); }
+function zurueck() { index--; anzeigen(); }
+
+// --------------------------------------------------
+// Start
+// --------------------------------------------------
+ladeJSON();
+</script>
+
+</body>
+</html>

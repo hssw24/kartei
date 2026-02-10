@@ -1,0 +1,34 @@
+[
+  {
+    "frage": "Was ist denn ist HTML?",
+    "antwort": "Eine Sprache zur Strukturierung von Webseiten."
+  },
+  {
+    "frage": "Was ist CSS?",
+    "antwort": "Eine Sprache zur Gestaltung von Webseiten."
+  },
+  {
+    "frage": "Was ist Javascript?",
+    "antwort": "Macht alles, was HTML und CSS nicht kann."
+  },
+  {
+    "frage": "Frage 4",
+    "antwort": "Macht alles, was HTML und CSS nicht kann.\n\nFrage 4.\n\nEnde."
+  },
+  {
+    "frage": "F5 und 5x",
+    "antwort": "F5\n\nF5"
+  },
+  {
+    "frage": "Aggregatzustände Übergänge?",
+    "antwort": "Fest schmelzen/erstarren flüssig\n\nFlüssig verdampfen/kondensieren gasförmig\n\nFest sublimieren/resublimieren gasförmig"
+  },
+  {
+    "frage": "Aggregatzustände?",
+    "antwort": "Fest, flüssig, gasförmig"
+  },
+  {
+    "frage": "Frage 4 und neu",
+    "antwort": "Macht alles, was HTML und CSS nicht kann.\n\nFrage 4.\n\nEnde."
+  }
+]
