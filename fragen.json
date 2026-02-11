@@ -1,34 +1,30 @@
 [
   {
-    "frage": "Was ist denn ist HTML?",
-    "antwort": "Eine Sprache zur Strukturierung von Webseiten."
-  },
-  {
-    "frage": "Was ist CSS?",
-    "antwort": "Eine Sprache zur Gestaltung von Webseiten."
-  },
-  {
-    "frage": "Was ist Javascript?",
-    "antwort": "Macht alles, was HTML und CSS nicht kann."
-  },
-  {
-    "frage": "Frage 4",
-    "antwort": "Macht alles, was HTML und CSS nicht kann.\n\nFrage 4.\n\nEnde."
-  },
-  {
-    "frage": "F5 und 5x",
-    "antwort": "F5\n\nF5"
-  },
-  {
-    "frage": "Aggregatzustände Übergänge?",
-    "antwort": "Fest schmelzen/erstarren flüssig\n\nFlüssig verdampfen/kondensieren gasförmig\n\nFest sublimieren/resublimieren gasförmig"
-  },
-  {
     "frage": "Aggregatzustände?",
     "antwort": "Fest, flüssig, gasförmig"
   },
   {
-    "frage": "Frage 4 und neu",
-    "antwort": "Macht alles, was HTML und CSS nicht kann.\n\nFrage 4.\n\nEnde."
+    "frage": "Aggregatzustände Übergänge?",
+    "antwort": "Fest → schmelzen/erstarren ← flüssig\n\nFlüssig → verdampfen/kondensieren ← gasförmig\n\nFest → sublimieren/resublimieren ← gasförmig"
+  },
+  {
+    "frage": "Schmelzpunkt und Siedepunkt von Eis bzw. Wasser?",
+    "antwort": "0°C und 100°C"
+  },
+  {
+    "frage": "Eigenschaften der Teilchen im festen Zustand?",
+    "antwort": "Fest: feste Plätze, geringe Bewegung, starke Anziehungskraft"
+  },
+  {
+    "frage": "Eigenschaften der Teilchen im flüssigen Zustand?",
+    "antwort": "Flüssig: keine festen Plätze, mittlere Bewegung, schwächere Anziehungskraft"
+  },
+  {
+    "frage": "Eigenschaften der Teilchen im gasförmigen Zustand?",
+    "antwort": "Gasförmig: frei beweglich, starke Bewegung, kaum Anziehungskraft"
+  },
+  {
+    "frage": "Temperaturskalen?",
+    "antwort": "Grad Celsius: Sie basiert auf dem Gefrierpunkt (0°C) und dem Siedepunkt (100°C) von Wasser.\n\nGrad Fahrenheit (USA/Karibik): Wasser gefriert hier bei 32°F und siedet bei 212°F.\n\nKelvin (Wissenschaft): Beginnt beim absoluten Nullpunkt (0 K=-273,15°C)."
   }
 ]

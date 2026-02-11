@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – Fragen bearbeiten</title>
+
+<style>
+  body { font-family:sans-serif; padding:20px; max-width:500px; margin:auto; }
+  .card { padding:15px; border:1px solid #ccc; border-radius:8px; margin-bottom:20px; }
+  button { width:100%; padding:10px; margin:5px 0; }
+  input, textarea { width:100%; padding:8px; margin:5px 0; }
+</style>
+</head>
+<body>
+
+<h2>🔧 Adminbereich</h2>
+
+<!-- ------------------------------
+     LISTE DER FRAGEN
+------------------------------- -->
+<div class="card">
+  <h3>Fragenliste</h3>
+  <select id="liste" size="6" style="width:100%;" onchange="laden()"></select>
+  <button onclick="nachOben()">▲ Nach oben</button>
+  <button onclick="nachUnten()">▼ Nach unten</button>
+</div>
+
+<!-- ------------------------------
+     FORMULAR FÜR CRUD
+------------------------------- -->
+<div class="card">
+  <h3>Frage bearbeiten / hinzufügen</h3>
+
+  <input id="eingabeFrage" placeholder="Frage">
+  <textarea id="eingabeAntwort" placeholder="Antwort (mit Zeilenumbrüchen)"></textarea>
+
+  <button onclick="speichern()">Speichern (neu oder überschreiben)</button>
+  <button onclick="loeschen()">Löschen</button>
+</div>
+
+<!-- ------------------------------
+     EXPORT / IMPORT
+------------------------------- -->
+<div class="card">
+  <h3>Export / Import</h3>
+
+  <!-- Export als Text -->
+  <button onclick="exportText()">Export als Text anzeigen</button>
+  <textarea id="exportFeld" style="width:100%; height:150px;" placeholder="Hier erscheint der JSON‑Export"></textarea>
+
+  <hr>
+
+  <!-- Import -->
+  <input type="file" id="importDatei" accept="application/json" style="display:none;" onchange="importieren()">
+  <button onclick="document.getElementById('importDatei').click()">JSON importieren</button>
+</div>
+
+<script>
+// --------------------------------------------------
+// Daten aus localStorage laden oder leere Liste
+// --------------------------------------------------
+let daten = JSON.parse(localStorage.getItem("fragenJSON")) || [];
+let liste = document.getElementById("liste");
+
+// --------------------------------------------------
+// Liste aktualisieren
+// --------------------------------------------------
+function aktualisieren() {
+  liste.innerHTML = "";
+  daten.forEach((item, i) => {
+    let opt = document.createElement("option");
+    opt.textContent = (i+1) + ": " + item.frage;
+    opt.value = i;
+    liste.appendChild(opt);
+  });
+}
+aktualisieren();
+
+// --------------------------------------------------
+// Ausgewählte Frage laden
+// --------------------------------------------------
+function laden() {
+  let i = liste.value;
+  if (i === "") return;
+
+  document.getElementById("eingabeFrage").value = daten[i].frage;
+  document.getElementById("eingabeAntwort").value = daten[i].antwort;
+}
+
+// --------------------------------------------------
+// Speichern (neu oder überschreiben)
+// --------------------------------------------------
+function speichern() {
+  let f = eingabeFrage.value.trim();
+  let a = eingabeAntwort.value.trim();
+  if (!f || !a) return alert("Bitte Frage und Antwort eingeben.");
+
+  let i = liste.value;
+
+  if (i === "") {
+    daten.push({ frage:f, antwort:a });
+  } else {
+    daten[i] = { frage:f, antwort:a };
+  }
+
+  localStorage.setItem("fragenJSON", JSON.stringify(daten));
+  aktualisieren();
+  alert("Gespeichert.");
+}
+
+// --------------------------------------------------
+// Löschen
+// --------------------------------------------------
+function loeschen() {
+  let i = liste.value;
+  if (i === "") return alert("Keine Frage ausgewählt.");
+  if (!confirm("Wirklich löschen?")) return;
+
+  daten.splice(i, 1);
+  localStorage.setItem("fragenJSON", JSON.stringify(daten));
+  aktualisieren();
+
+  eingabeFrage.value = "";
+  eingabeAntwort.value = "";
+}
+
+// --------------------------------------------------
+// Frage nach oben verschieben
+// --------------------------------------------------
+function nachOben() {
+  let i = Number(liste.value);
+  if (i <= 0) return; // schon ganz oben
+
+  // Elemente tauschen
+  [daten[i - 1], daten[i]] = [daten[i], daten[i - 1]];
+
+  // Speichern
+  localStorage.setItem("fragenJSON", JSON.stringify(daten));
+
+  // Liste neu anzeigen
+  aktualisieren();
+
+  // Auswahl beibehalten
+  liste.value = i - 1;
+  laden();
+}
+
+// --------------------------------------------------
+// Frage nach unten verschieben
+// --------------------------------------------------
+function nachUnten() {
+  let i = Number(liste.value);
+  if (i < 0 || i >= daten.length - 1) return; // schon ganz unten
+
+  // Elemente tauschen
+  [daten[i + 1], daten[i]] = [daten[i], daten[i + 1]];
+
+  // Speichern
+  localStorage.setItem("fragenJSON", JSON.stringify(daten));
+
+  // Liste neu anzeigen
+  aktualisieren();
+
+  // Auswahl beibehalten
+  liste.value = i + 1;
+  laden();
+}
+
+
+
+// --------------------------------------------------
+// Export: JSON im Textfeld anzeigen
+// --------------------------------------------------
+function exportText() {
+  document.getElementById("exportFeld").value =
+    JSON.stringify(daten, null, 2);
+}
+
+// --------------------------------------------------
+// Import: JSON-Datei einlesen
+// --------------------------------------------------
+function importieren() {
+  let file = document.getElementById("importDatei").files[0];
+  if (!file) return;
+
+  let reader = new FileReader();
+
+  reader.onload = function(e) {
+    try {
+      let text = e.target.result;
+
+      // BOM entfernen, falls vorhanden
+      text = text.replace(/^\uFEFF/, "").trim();
+
+      let neu = JSON.parse(text);
+
+      if (!Array.isArray(neu)) {
+        alert("Die Datei enthält kein gültiges Fragen-Array.");
+        return;
+      }
+
+      daten = neu;
+      localStorage.setItem("fragenJSON", JSON.stringify(daten));
+      aktualisieren();
+      alert("Import erfolgreich.");
+    } catch (err) {
+      alert("Fehler beim Lesen der Datei. Ist es gültiges JSON?");
+    }
+  };
+
+  reader.readAsText(file);
+}
+</script>
+
+</body>
+</html>
